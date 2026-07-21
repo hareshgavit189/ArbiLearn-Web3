@@ -2,7 +2,7 @@
 
 A **4-page educational Web3 website** built from scratch using plain HTML, CSS, and JavaScript — no frameworks, no scaffolding. Built as an assignment for the **Arbitrum Builder Labs by LamprosDAO** program.
 
-> **Live URL:** Open `index.html` in any modern browser — no build step, no server required.
+> **Live URL: https://hareshgavit189.github.io/ArbiLearn-Web3/
 
 ---
 
