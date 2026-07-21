@@ -119,4 +119,4 @@ AI+W3/
 
 **Haresh Gavit**
 - GitHub: [hareshgavit189](https://github.com/hareshgavit189/Arbitrum-Builder-Labs-4-Page-Web3)
-- Program: Arbitrum Builder Labs by LamprosDAO — Builder Pods 2025
+- Program: Arbitrum Builder Labs by LamprosDAO — Builder Pods 2026
