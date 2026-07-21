@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Live cryptocurrency prices dashboard — real-time BTC, ETH, SOL, and ARB prices from CoinGecko API." />
+  <title>ArbiLearn — Live Crypto Prices</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/prices.css" />
+</head>
+<body>
+
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <button id="back-to-top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo" aria-label="ArbiLearn Home">
+        <div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg></div>
+        <div class="nav-logo-text"><span class="nav-logo-name">ArbiLearn</span><span class="nav-logo-sub">Web3 Education</span></div>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="concepts.html" class="nav-link">Concepts</a></li>
+        <li><a href="prices.html" class="nav-link" id="nav-prices">Live Prices</a></li>
+        <li><a href="simulator.html" class="nav-link">Block Simulator</a></li>
+      </ul>
+      <div class="nav-right">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode"><span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span></button>
+        <span class="nav-badge hide-mobile">Arbitrum Builder Labs</span>
+      </div>
+      <button class="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="nav-mobile-menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="nav-mobile" id="nav-mobile-menu" role="navigation">
+    <a href="index.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    <a href="concepts.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Concepts</a>
+    <a href="prices.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>Live Prices</a>
+    <a href="simulator.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Block Simulator</a>
+  </div>
+
+  <main class="page-wrapper" id="main-content">
+
+    <!-- Dark Header -->
+    <header class="prices-hero section-dark">
+      <div class="prices-hero-bg" aria-hidden="true"></div>
+      <div class="container prices-hero-inner">
+        <div class="prices-hero-left">
+          <p class="section-label section-label-light">Live Data</p>
+          <h1 style="color:white; margin-bottom:var(--space-4);">
+            Crypto Price <span class="gradient-text">Dashboard</span>
+          </h1>
+          <div class="prices-meta">
+            <div class="prices-live-indicator">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span>Live data</span>
+            </div>
+            <span class="prices-source">Powered by <a href="https://www.coingecko.com" target="_blank" rel="noopener noreferrer">CoinGecko API</a> · no API key required</span>
+            <span class="prices-source">Updated: <strong id="last-updated-time" aria-live="polite">—</strong></span>
+          </div>
+        </div>
+        <div class="prices-controls">
+          <div class="countdown-wrap" aria-live="polite" aria-label="Next auto-refresh countdown">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Refresh in <span id="countdown-val">60</span>s
+          </div>
+          <button class="btn btn-white btn-sm" id="btn-refresh" aria-label="Refresh crypto prices now">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+            Refresh
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container prices-container">
+      <!-- Price Cards Grid -->
+      <section aria-label="Live cryptocurrency prices" aria-live="polite">
+        <div class="prices-grid" id="prices-grid" role="list">
+          <div class="loading-overlay">
+            <div class="loading-spinner" aria-hidden="true"></div>
+            <p class="loading-text">Fetching live prices from CoinGecko…</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Info Cards — Dabang-style -->
+      <section class="prices-info reveal" aria-label="Why crypto prices matter">
+        <p class="section-label">Why This Matters</p>
+        <h2 class="section-title mb-xl">
+          Prices as a <span class="gradient-text">Web3 Developer</span>
+        </h2>
+        <div class="info-cards grid-3">
+          <article class="card info-card">
+            <div class="info-card-icon icon-orange">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 0 0 6.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 0 0 6.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+            </div>
+            <h3>Gas Cost Awareness</h3>
+            <p>ETH price directly affects gas costs on Ethereum L1. On Arbitrum, gas is paid in ETH too — but at a fraction of the cost. Track ETH to estimate deployment costs.</p>
+          </article>
+          <article class="card info-card">
+            <div class="info-card-icon icon-blue">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            </div>
+            <h3>ARB Token Governance</h3>
+            <p>ARB is the native token of Arbitrum — used for governance votes. Holders decide protocol upgrades, grants, and the future of the network.</p>
+          </article>
+          <article class="card info-card">
+            <div class="info-card-icon icon-green">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.99 12 19.79 19.79 0 0 1 1.93 3.36a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <h3>CoinGecko API</h3>
+            <p>This dashboard uses CoinGecko's free public API — a rite of passage for every Web3 developer. Fetching on-chain data with no API key is your first step toward building real dApps.</p>
+          </article>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><div class="footer-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg></div><span>ArbiLearn</span></a>
+          <p class="footer-brand-desc">A Web3 educational project built from scratch for Arbitrum Builder Labs by LamprosDAO.</p>
+          <div class="footer-socials"><a href="https://github.com/hareshgavit189/Arbitrum-Builder-Labs-4-Page-Web3" target="_blank" rel="noopener noreferrer" class="footer-social-link"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>GitHub</a></div>
+        </div>
+        <div><p class="footer-col-title">Pages</p><ul class="footer-col-links"><li><a href="index.html">Home</a></li><li><a href="concepts.html">Concepts</a></li><li><a href="prices.html">Live Prices</a></li><li><a href="simulator.html">Simulator</a></li></ul></div>
+        <div><p class="footer-col-title">Resources</p><ul class="footer-col-links"><li><a href="https://www.coingecko.com" target="_blank" rel="noopener noreferrer">CoinGecko</a></li><li><a href="https://sepolia.arbiscan.io/" target="_blank" rel="noopener noreferrer">Arbiscan Explorer</a></li><li><a href="https://faucet.lamprosdao.com/" target="_blank" rel="noopener noreferrer">LamprosDAO Faucet</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p class="footer-copy">© 2025 Haresh Gavit · Arbitrum Builder Labs by LamprosDAO</p><div class="footer-batch"><span class="footer-batch-label">Batch:</span><span class="footer-batch-value">Arbitrum Builder Pods 2025</span></div></div>
+    </div>
+  </footer>
+
+  <script src="js/nav.js"></script>
+  <script src="js/prices.js"></script>
+</body>
+</html>

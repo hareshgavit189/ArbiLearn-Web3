@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive block mining simulator — mine blocks with real SHA-256 via Web Crypto API. Watch how changing data breaks the blockchain chain." />
+  <title>ArbiLearn — Block Mining Simulator</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/simulator.css" />
+</head>
+<body>
+
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <button id="back-to-top" aria-label="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar-inner">
+      <a href="index.html" class="nav-logo" aria-label="ArbiLearn Home">
+        <div class="nav-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg></div>
+        <div class="nav-logo-text"><span class="nav-logo-name">ArbiLearn</span><span class="nav-logo-sub">Web3 Education</span></div>
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="concepts.html" class="nav-link">Concepts</a></li>
+        <li><a href="prices.html" class="nav-link">Live Prices</a></li>
+        <li><a href="simulator.html" class="nav-link" id="nav-simulator">Block Simulator</a></li>
+      </ul>
+      <div class="nav-right">
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark/light mode"><span class="theme-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span></button>
+        <span class="nav-badge hide-mobile">Arbitrum Builder Labs</span>
+      </div>
+      <button class="nav-hamburger" aria-label="Toggle mobile menu" aria-expanded="false" aria-controls="nav-mobile-menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="nav-mobile" id="nav-mobile-menu" role="navigation">
+    <a href="index.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
+    <a href="concepts.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Concepts</a>
+    <a href="prices.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>Live Prices</a>
+    <a href="simulator.html" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>Block Simulator</a>
+  </div>
+
+  <main class="page-wrapper" id="main-content">
+
+    <!-- Dark Hero Header -->
+    <header class="sim-hero section-dark">
+      <div class="sim-hero-bg" aria-hidden="true"></div>
+      <div class="container sim-hero-inner">
+        <div class="sim-hero-left">
+          <p class="section-label section-label-light">Proof of Work Demo</p>
+          <h1 style="color:white; margin-bottom:var(--space-4);">
+            Block Mining <span class="gradient-text">Simulator</span>
+          </h1>
+          <p style="color:rgba(255,255,255,0.6); max-width:50ch;">
+            Mine blocks using real SHA-256 via the Web Crypto API. Discover how changing data in Block 1 instantly invalidates Block 2 — proving blockchain immutability.
+          </p>
+        </div>
+        <div class="sim-hero-badges">
+          <div class="sim-badge">
+            <div class="icon-box-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="sim-badge-val">Real SHA-256</div>
+              <div class="sim-badge-label">Web Crypto API</div>
+            </div>
+          </div>
+          <div class="sim-badge">
+            <div class="icon-box-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <div>
+              <div class="sim-badge-val">Difficulty: 00</div>
+              <div class="sim-badge-label">Hash prefix target</div>
+            </div>
+          </div>
+          <div class="sim-badge">
+            <div class="icon-box-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+            </div>
+            <div>
+              <div class="sim-badge-val">2 Blocks</div>
+              <div class="sim-badge-label">Linked chain</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container sim-container">
+
+      <!-- Tamper Alert -->
+      <div class="tamper-alert" id="tamper-alert" role="alert" aria-live="assertive">
+        <div class="tamper-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div>
+          <strong>Chain Broken!</strong> Block 2 is now invalid because Block 1's data changed. To fix the chain, re-mine both blocks.
+        </div>
+      </div>
+
+      <!-- Blocks Chain -->
+      <div class="chain-wrapper" aria-label="Two-block blockchain simulation">
+
+        <!-- Block 1 -->
+        <article class="block-card" id="block-1" aria-label="Block 1">
+          <div class="block-header">
+            <div class="block-num-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              Block #1
+            </div>
+            <div class="block-status pending" id="block1-status">
+              <span>◌</span> Pending
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="mine-progress" id="block1-progress" role="progressbar" aria-label="Mining progress">
+            <div class="mine-progress-fill"></div>
+          </div>
+
+          <div class="block-fields">
+            <div class="block-field">
+              <label class="field-label" for="block1-data">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Transaction Data
+              </label>
+              <textarea
+                id="block1-data"
+                class="block-input block-textarea"
+                placeholder='e.g. Alice sends 1 ETH to Bob'
+                rows="3"
+                aria-label="Block 1 transaction data"
+              ></textarea>
+            </div>
+
+            <div class="block-field-row">
+              <div class="block-field half">
+                <label class="field-label" for="block1-nonce">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                  Nonce
+                </label>
+                <input type="number" id="block1-nonce" class="block-input" value="0" aria-label="Block 1 nonce value" />
+              </div>
+              <div class="block-field half">
+                <label class="field-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  Nonce Tries
+                </label>
+                <div class="nonce-count-display" id="block1-nonce-count">0</div>
+              </div>
+            </div>
+
+            <div class="block-field">
+              <label class="field-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+                Previous Hash
+              </label>
+              <input type="text" id="block1-prevhash" class="block-input mono-input" value="0000…0000" readonly aria-label="Block 1 previous hash" />
+            </div>
+
+            <div class="block-field">
+              <label class="field-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Block Hash (SHA-256)
+              </label>
+              <div class="hash-display" id="block1-hash" aria-label="Block 1 computed hash">Not yet computed…</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary mine-btn" id="btn-mine-1" aria-label="Mine Block 1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Mine Block #1
+          </button>
+        </article>
+
+        <!-- Chain Connector -->
+        <div class="chain-connector" id="chain-connector-line" aria-label="Chain link between blocks">
+          <div class="connector-line"></div>
+          <div class="connector-badge" id="chain-connector-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            prevHash →
+          </div>
+          <div class="connector-line"></div>
+        </div>
+
+        <!-- Block 2 -->
+        <article class="block-card" id="block-2" aria-label="Block 2">
+          <div class="block-header">
+            <div class="block-num-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              Block #2
+            </div>
+            <div class="block-status pending" id="block2-status">
+              <span>◌</span> Pending
+            </div>
+          </div>
+
+          <div class="mine-progress" id="block2-progress" role="progressbar" aria-label="Mining progress">
+            <div class="mine-progress-fill"></div>
+          </div>
+
+          <div class="block-fields">
+            <div class="block-field">
+              <label class="field-label" for="block2-data">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Transaction Data
+              </label>
+              <textarea
+                id="block2-data"
+                class="block-input block-textarea"
+                placeholder='e.g. Bob sends 0.5 ETH to Carol'
+                rows="3"
+                aria-label="Block 2 transaction data"
+              ></textarea>
+            </div>
+
+            <div class="block-field-row">
+              <div class="block-field half">
+                <label class="field-label" for="block2-nonce">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+                  Nonce
+                </label>
+                <input type="number" id="block2-nonce" class="block-input" value="0" aria-label="Block 2 nonce value" />
+              </div>
+              <div class="block-field half">
+                <label class="field-label">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  Nonce Tries
+                </label>
+                <div class="nonce-count-display" id="block2-nonce-count">0</div>
+              </div>
+            </div>
+
+            <div class="block-field">
+              <label class="field-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+                Previous Hash (from Block 1)
+              </label>
+              <input type="text" id="block2-prevhash" class="block-input mono-input" value="—" readonly aria-label="Block 2 previous hash (from Block 1)" />
+            </div>
+
+            <div class="block-field">
+              <label class="field-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Block Hash (SHA-256)
+              </label>
+              <div class="hash-display" id="block2-hash" aria-label="Block 2 computed hash">Not yet computed…</div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary mine-btn" id="btn-mine-2" aria-label="Mine Block 2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Mine Block #2
+          </button>
+        </article>
+
+      </div><!-- /chain-wrapper -->
+
+      <!-- Reset Button -->
+      <div class="sim-actions">
+        <button class="btn btn-outline" id="btn-reset" aria-label="Reset both blocks">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-3.09"/></svg>
+          Reset All Blocks
+        </button>
+      </div>
+
+      <!-- Explainer Cards — Dabang-style -->
+      <section class="sim-explainer reveal" aria-label="How the block simulator works">
+        <p class="section-label">How It Works</p>
+        <h2 class="section-title mb-xl">Understanding <span class="gradient-text">Proof of Work</span></h2>
+        <div class="grid-3">
+          <div class="card explainer-card">
+            <div class="explainer-icon icon-blue">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <h3>The Nonce</h3>
+            <p>Miners increment a number (nonce) millions of times until the SHA-256 hash of the block starts with "00". This is brute-force computation — there's no shortcut.</p>
+          </div>
+          <div class="card explainer-card">
+            <div class="explainer-icon icon-orange">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </div>
+            <h3>Chain Linking</h3>
+            <p>Each block stores the <em>previous hash</em>. If you tamper with Block 1, its hash changes — which invalidates Block 2 since Block 2's prevHash no longer matches.</p>
+          </div>
+          <div class="card explainer-card">
+            <div class="explainer-icon icon-green">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Immutability</h3>
+            <p>To alter Block 1 on a real blockchain, you'd need to re-mine every subsequent block faster than the entire network mines new ones. Mathematically impossible.</p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-logo"><div class="footer-logo-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg></div><span>ArbiLearn</span></a>
+          <p class="footer-brand-desc">A Web3 educational project built from scratch for Arbitrum Builder Labs by LamprosDAO.</p>
+          <div class="footer-socials"><a href="https://github.com/hareshgavit189/Arbitrum-Builder-Labs-4-Page-Web3" target="_blank" rel="noopener noreferrer" class="footer-social-link"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>GitHub</a></div>
+        </div>
+        <div><p class="footer-col-title">Pages</p><ul class="footer-col-links"><li><a href="index.html">Home</a></li><li><a href="concepts.html">Concepts</a></li><li><a href="prices.html">Live Prices</a></li><li><a href="simulator.html">Simulator</a></li></ul></div>
+        <div><p class="footer-col-title">Inspiration</p><ul class="footer-col-links"><li><a href="https://andersbrownworth.com/blockchain/" target="_blank" rel="noopener noreferrer">Anders Brownworth's Demo</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest" target="_blank" rel="noopener noreferrer">Web Crypto API</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><p class="footer-copy">© 2025 Haresh Gavit · Arbitrum Builder Labs by LamprosDAO</p><div class="footer-batch"><span class="footer-batch-label">Batch:</span><span class="footer-batch-value">Arbitrum Builder Pods 2025</span></div></div>
+    </div>
+  </footer>
+
+  <script src="js/nav.js"></script>
+  <script src="js/simulator.js"></script>
+</body>
+</html>

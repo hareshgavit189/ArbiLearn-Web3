@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ──────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    /* Removed custom cursor for a more standard professional feel */
+  }
+
+  body {
+    @apply bg-bg text-primary font-body antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar       { width: 6px; }
+  ::-webkit-scrollbar-track { background: #050505; }
+  ::-webkit-scrollbar-thumb { background: #262626; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #404040; }
+}
+
+/* ── Components ────────────────────────────────────────── */
+@layer components {
+  /* Glass card -> Professional surface card */
+  .glass {
+    @apply bg-surface border border-border rounded-xl;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.02);
+  }
+
+  .glass-hover {
+    @apply glass transition-all duration-300;
+  }
+  .glass-hover:hover {
+    @apply border-muted/30 -translate-y-0.5;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+  .text-gradient-accent {
+    @apply bg-gradient-accent bg-clip-text text-transparent;
+  }
+
+  /* Section label */
+  .section-label {
+    @apply inline-flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-muted font-display;
+  }
+
+  /* Gradient border button -> Professional solid/outline buttons */
+  .btn-glow {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm
+           bg-primary text-bg transition-all duration-200 select-none border border-primary;
+  }
+  .btn-glow:hover { @apply bg-white/90 transform scale-[0.98]; }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium text-sm
+           text-primary border border-border bg-surface transition-all duration-200;
+  }
+  .btn-outline:hover { @apply bg-surface-2 border-muted/40; }
+
+  /* Divider */
+  .gradient-divider {
+    @apply h-px w-full bg-border;
+  }
+}
+
+/* ── Utilities ─────────────────────────────────────────── */
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .perspective { perspective: 1200px; }
+  .preserve-3d { transform-style: preserve-3d; }
+  .backface-hidden { backface-visibility: hidden; }
+  .rotate-y-180 { transform: rotateY(180deg); }
+}
+
+/* ── Loading Screen ────────────────────────────────────── */
+.loading-screen {
+  @apply fixed inset-0 z-[9000] flex flex-col items-center justify-center bg-bg;
+}
+
+/* ── Scroll Progress Bar ───────────────────────────────── */
+.scroll-progress {
+  @apply fixed top-0 left-0 h-[2px] z-[200] origin-left;
+  background: #ffffff;
+}
+
+/* ── Hash value monospace ──────────────────────────────── */
+.hash-display {
+  @apply font-mono text-xs break-all leading-relaxed;
+  color: #737373;
+}
+.hash-display .hash-prefix { color: #ffffff; font-weight: 700; }
+.hash-display.valid  { color: #ffffff; }
+.hash-display.invalid { color: #ef4444; }
+
+/* ── Price card update flash ───────────────────────────── */
+@keyframes card-flash {
+  0%   { background-color: rgba(255,255,255,0); }
+  30%  { background-color: rgba(255,255,255,0.05); }
+  100% { background-color: rgba(255,255,255,0); }
+}
+.card-updated { animation: card-flash 0.6s ease; }
+
+/* ── Mining progress ────────────────────────────────────── */
+@keyframes progress-indeterminate {
+  0%   { margin-left: 0%;  width: 30%; }
+  50%  { margin-left: 35%; width: 50%; }
+  100% { margin-left: 70%; width: 30%; }
+}
+.progress-indeterminate {
+  animation: progress-indeterminate 1.2s ease-in-out infinite;
+}
